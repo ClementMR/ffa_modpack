@@ -182,14 +182,13 @@ end)
 local function is_player_outside(player)
     local player_pos = player:get_pos()
     local map_pos1, map_pos2 = ffa.map.pos1, ffa.map.pos2
-    if not map_pos1 or map_pos2 then
-        return nil
-    end
 
-    if player_pos.x < math.min(map_pos1.x, map_pos2.x) or player_pos.x > math.max(map_pos1.x, map_pos2.x) or
-        player_pos.y < math.min(map_pos1.y, map_pos2.y) or player_pos.y > math.max(map_pos1.y, map_pos2.y) or
-        player_pos.z < math.min(map_pos1.z, map_pos2.z) or player_pos.z > math.max(map_pos1.z, map_pos2.z) then
-        return true
+    if map_pos1 and map_pos2 then
+        if player_pos.x < math.min(map_pos1.x, map_pos2.x) or player_pos.x > math.max(map_pos1.x, map_pos2.x) or
+            player_pos.y < math.min(map_pos1.y, map_pos2.y) or player_pos.y > math.max(map_pos1.y, map_pos2.y) or
+            player_pos.z < math.min(map_pos1.z, map_pos2.z) or player_pos.z > math.max(map_pos1.z, map_pos2.z) then
+            return true
+        end
     end
 
     return false
@@ -200,7 +199,6 @@ local old_is_protected = core.is_protected
 function core.is_protected(pos, name)
     local player = core.get_player_by_name(name)
 	if get_player_in_list(player) and is_player_outside(player) then
-        print("fdp")
 		return true
 	end
 	return old_is_protected(pos, name)
@@ -227,9 +225,9 @@ core.register_globalstep(function(dtime)
             end
         end
 
-        if not ffa.disabled then
+        if not ffa.disabled and ffa.map.pos1 ~= nil and ffa.map.pos2 then
             for _, player in ipairs(core.get_connected_players()) do
-                local is_outside =  is_player_outside(player)
+                local is_outside = is_player_outside(player)
                 if is_outside == false and not get_player_in_list(player) then
                     ffa.on_enter(player)
                 end
