@@ -31,6 +31,11 @@ core.register_chatcommand("ffa_spawn", {
     func = function(name, param)
         local player = core.get_player_by_name(name)
         local params = param:split(" ")
+
+        if not ffa.map.spawns then
+            ffa.map.spawns = {}
+        end
+
         if params[1] == "add" then
             local pos =  vector.round(player:get_pos())
             table.insert(ffa.map.spawns, pos)
