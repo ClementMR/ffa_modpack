@@ -108,7 +108,7 @@ core.register_chatcommand("ffa_toggle", {
 })
 
 core.after(0, function()
-    ffa.map = core.deserialize(modstorage:get_string("ffa:map"))
+    ffa.map = core.deserialize(modstorage:get_string("ffa:map")) or {}
 end)
 
 --[[
