@@ -182,13 +182,14 @@ end)
 local function is_player_outside(player)
     local player_pos = player:get_pos()
     local map_pos1, map_pos2 = ffa.map.pos1, ffa.map.pos2
+    if not map_pos1 or map_pos2 then
+        return nil
+    end
 
-    if map_pos1 and map_pos2 then
-        if player_pos.x < math.min(map_pos1.x, map_pos2.x) or player_pos.x > math.max(map_pos1.x, map_pos2.x) or
-            player_pos.y < math.min(map_pos1.y, map_pos2.y) or player_pos.y > math.max(map_pos1.y, map_pos2.y) or
-            player_pos.z < math.min(map_pos1.z, map_pos2.z) or player_pos.z > math.max(map_pos1.z, map_pos2.z) then
-            return true
-        end
+    if player_pos.x < math.min(map_pos1.x, map_pos2.x) or player_pos.x > math.max(map_pos1.x, map_pos2.x) or
+        player_pos.y < math.min(map_pos1.y, map_pos2.y) or player_pos.y > math.max(map_pos1.y, map_pos2.y) or
+        player_pos.z < math.min(map_pos1.z, map_pos2.z) or player_pos.z > math.max(map_pos1.z, map_pos2.z) then
+        return true
     end
 
     return false
@@ -229,7 +230,7 @@ core.register_globalstep(function(dtime)
         if not ffa.disabled then
             for _, player in ipairs(core.get_connected_players()) do
                 local is_outside =  is_player_outside(player)
-                if not is_outside and not get_player_in_list(player) then
+                if is_outside == false and not get_player_in_list(player) then
                     ffa.on_enter(player)
                 end
             end
