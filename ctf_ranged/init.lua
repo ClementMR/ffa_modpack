@@ -38,7 +38,7 @@ local function process_ray(ray, user, look_dir, def)
 			local node = core.get_node(hitpoint.under)
 			local nodedef = core.registered_nodes[node.name]
 
-			if nodedef.on_ranged_shoot or nodedef.groups.snappy or (nodedef.groups.oddly_breakable_by_hand or 0) >= 3 then
+			if nodedef.on_ranged_shoot or node.name == "wool:red" or node.name == "wool:blue" then
 				if not core.is_protected(hitpoint.under, user:get_player_name()) then
 					if nodedef.on_ranged_shoot then
 						nodedef.on_ranged_shoot(hitpoint.under, node, user, def.type)
