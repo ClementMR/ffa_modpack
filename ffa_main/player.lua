@@ -92,19 +92,6 @@ local function insert_player(player)
     modstorage:set_string("ffa:players", core.serialize(names))
 end
 
-local function remove_player(player)
-    local names = ffa.get_names()
-
-    for i, name in ipairs(names) do
-        if player:get_player_name() == name then
-            table.remove(names, i)
-            --break
-        end
-    end
-
-    modstorage:set_string("ffa:players", core.serialize(names))
-end
-
 local function send_system_message(message)
     for _, name in ipairs(ffa.get_names()) do
         core.chat_send_player(name, message)
@@ -135,6 +122,19 @@ function ffa.get_player_in_list(player)
     end
 
     return false
+end
+
+function ffa.remove_player(player)
+    local names = ffa.get_names()
+
+    for i, name in ipairs(names) do
+        if player:get_player_name() == name then
+            table.remove(names, i)
+            --break
+        end
+    end
+
+    modstorage:set_string("ffa:players", core.serialize(names))
 end
 
 function ffa.serialize_inventory(player)
@@ -190,7 +190,7 @@ function ffa.on_leave(player)
 
     ffa.serialize_inventory(player)
 
-    remove_player(player)
+    ffa.remove_player(player)
     send_system_message("*** " .. player:get_player_name() .. " left FFA.")
 
     skylith.try_tp_to_spawn(player)
