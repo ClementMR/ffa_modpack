@@ -2,6 +2,7 @@ local regular_loot = {
     {name = "wool:red", chance = 0.9, max = 16},
     {name = "wool:blue", chance = 0.9, max = 16},
     {name = "default:apple", chance = 0.5, max = 6},
+    {name = "ms_items:snowball", chance = 0.5, max = 3},
 
     {name = "default:sword_steel", chance = 0.3, max = 1},
     {name = "3d_armor:helmet_steel", chance = 0.2, max = 1},
@@ -26,6 +27,7 @@ local mese_loot = {
     {name = "wool:blue", chance = 0.9, max = 16},
     {name = "default:apple", chance = 0.5, max = 8},
 	{name = "default:blueberries", chance = 0.4, max = 8},
+    {name = "ms_items:snowball", chance = 0.5, max = 3},
 
     {name = "default:sword_mese", chance = 0.3, max = 1},
 	{name = "3d_armor:helmet_gold", chance = 0.2, max = 1},
@@ -34,9 +36,11 @@ local mese_loot = {
 	{name = "3d_armor:boots_gold", chance = 0.2, max = 1},
 	{name = "shields:shield_gold", chance = 0.2, max = 1},
 
-    {name = "ffa_loot:diamond_key", chance = 0.05, max = 1},
+    {name = "ffa_loot:diamond_key", chance = 0.15, max = 1},
     {name = "xdecor:cobweb", chance = 0.4, max = 8},
     {name = "enderpearl:ender_pearl", chance = 0.2, max = 3},
+    {name = "ctf_ranged:shotgun_loaded", chance = 0.1, max = 1},
+    {name = "ctf_ranged:ammo", chance = 0.4, max = 5},
 }
 
 local diamond_loot = {
@@ -44,6 +48,7 @@ local diamond_loot = {
     {name = "wool:blue", chance = 0.9, max = 16},
     {name = "default:apple", chance = 0.5, max = 8},
     {name = "farming:bread", chance = 0.5, max = 8},
+    {name = "ms_items:snowball", chance = 0.5, max = 3},
 
     {name = "default:sword_diamond", chance = 0.3, max = 1},
 	{name = "3d_armor:helmet_diamond", chance = 0.2, max = 1},
@@ -52,7 +57,7 @@ local diamond_loot = {
 	{name = "3d_armor:boots_diamond", chance = 0.2, max = 1},
 	{name = "shields:shield_diamond", chance = 0.2, max = 1},
 
-    --{name = "ms_items:sword_shadow", chance = 0.1, max = 1},
+    {name = "ms_items:sword_shadow", chance = 0.1, max = 1},
 	{name = "3d_armor:helmet_mithril", chance = 0.05, max = 1},
 	{name = "3d_armor:chestplate_mithril", chance = 0.02, max = 1},
 	{name = "3d_armor:leggings_mithril", chance = 0.02, max = 1},
@@ -61,11 +66,13 @@ local diamond_loot = {
 
     {name = "enderpearl:ender_pearl", chance = 0.5, max = 3},
     {name = "xdecor:cobweb", chance = 0.5, max = 8},
+    {name = "ctf_ranged:shotgun_loaded", chance = 0.4, max = 1},
+    {name = "ctf_ranged:ammo", chance = 0.5, max = 5},
 }
 
-local REGULAR_CHEST = 60
-local MESE_CHEST = 120
-local DIAMOND_CHEST = 20
+local REGULAR_CHEST = 30
+local MESE_CHEST = 60
+local DIAMOND_CHEST = 15
 
 local function fill_chest_random(pos, loot)
     local meta = core.get_meta(pos)
@@ -159,7 +166,7 @@ core.register_node("ffa_loot:regular_chest", {
 	legacy_facedir_simple = true,
 	is_ground_content = false,
 	sounds = default.node_sound_wood_defaults(),
-	groups = {choppy = 2, oddly_breakable_by_hand = 2},
+	groups = {unbreakable=1},
     on_construct = function(pos) construct_node(pos, "Regular Chest") end,
     on_rightclick = function(pos, node, clicker) regular_chest_on_rightclick(pos, node, clicker) end,
     on_timer = function(pos, elapsed)
@@ -190,9 +197,8 @@ core.register_node("ffa_loot:regular_chest_open", {
 	legacy_facedir_simple = true,
 	is_ground_content = false,
 	sounds = default.node_sound_wood_defaults(),
-	groups = {choppy = 2, oddly_breakable_by_hand = 2, not_in_creative_inventory=1},
+	groups = {unbreakable=1, not_in_creative_inventory=1},
     on_construct = function(pos) construct_node(pos, "Regular Chest") end,
-    can_dig = function(pos,player) return end,
     on_rightclick = function(pos, node, clicker) regular_chest_on_rightclick(pos, node, clicker) end,
     on_timer = function(pos, elapsed)
         update_node(pos, REGULAR_CHEST, regular_loot)
@@ -221,7 +227,7 @@ core.register_node("ffa_loot:mese_chest", {
 	legacy_facedir_simple = true,
 	is_ground_content = false,
 	sounds = default.node_sound_wood_defaults(),
-	groups = {choppy = 2, oddly_breakable_by_hand = 2},
+	groups = {unbreakable=1},
     on_construct = function(pos) construct_node(pos, "Mese Chest") end,
     on_rightclick = function(pos, node, clicker) mese_chest_on_rightclick(pos, node, clicker) end,
     on_timer = function(pos, elapsed)
@@ -238,8 +244,8 @@ core.register_node("ffa_loot:mese_chest_open", {
         "default_chest_top.png^[colorize:#FFDF20:100",
         "default_chest_side.png^[colorize:#FFDF20:100",
         "default_chest_side.png^[colorize:#FFDF20:100",
-        "default_chest_side.png^[colorize:#FFDF20:100",
-        "default_chest_front.png^[colorize:#FFDF20:100"
+        "default_chest_front.png^[colorize:#FFDF20:100",
+        "default_chest_inside.png"
 	},
     selection_box = {
 		type = "fixed",
@@ -252,9 +258,8 @@ core.register_node("ffa_loot:mese_chest_open", {
 	legacy_facedir_simple = true,
 	is_ground_content = false,
 	sounds = default.node_sound_wood_defaults(),
-	groups = {choppy = 2, oddly_breakable_by_hand = 2, not_in_creative_inventory=1},
+	groups = {unbreakable=1, not_in_creative_inventory=1},
     on_construct = function(pos) construct_node(pos, "Mese Chest") end,
-    can_dig = function(pos,player) return end,
     on_rightclick = function(pos, node, clicker) mese_chest_on_rightclick(pos, node, clicker) end,
     on_timer = function(pos, elapsed)
         update_node(pos, MESE_CHEST, mese_loot)
@@ -304,7 +309,7 @@ local function update_diamond_chest(pos, closing_time)
     if (timer -1) == 0 then
         meta:set_string("infotext", ("%s"):format(infotext:split(",")[1]))
         core.swap_node(pos, {name = "ffa_loot:diamond_chest", param2 = core.get_node(pos).param2 })
-        for _, name in ipairs(ffa.get_players()) do
+        for _, name in ipairs(ffa.get_names()) do
             core.close_formspec(name, "ffa_loot:diamond_chest")
         end
     end
@@ -325,7 +330,7 @@ core.register_node("ffa_loot:diamond_chest", {
 	legacy_facedir_simple = true,
 	is_ground_content = false,
 	sounds = default.node_sound_wood_defaults(),
-	groups = {choppy = 2, oddly_breakable_by_hand = 2},
+	groups = {unbreakable=1},
     on_construct = function(pos) construct_node(pos, "Diamond Chest") end,
     on_rightclick = function(pos, node, clicker)
         local cn = clicker:get_player_name()
@@ -341,7 +346,7 @@ core.register_node("ffa_loot:diamond_chest", {
             fill_chest_random(pos, diamond_loot)
             meta:set_int("timer", DIAMOND_CHEST)
 
-            for _, name in ipairs(ffa.get_players()) do
+            for _, name in ipairs(ffa.get_names()) do
                 core.chat_send_player(name,
                     ("%s has opened a %s"):format(cn, core.colorize("#12e8ec", "Diamond Chest")))
             end
@@ -383,9 +388,8 @@ core.register_node("ffa_loot:diamond_chest_open", {
 	legacy_facedir_simple = true,
 	is_ground_content = false,
 	sounds = default.node_sound_wood_defaults(),
-	groups = {choppy = 2, oddly_breakable_by_hand = 2, not_in_creative_inventory=1},
+	groups = {unbreakable=1, not_in_creative_inventory=1},
     on_construct = function(pos) construct_node(pos, "Diamond Chest") end,
-    can_dig = function(pos,player) return end,
     on_rightclick = function(pos, node, clicker)
         local cn = clicker:get_player_name()
         core.show_formspec(cn, "ffa_loot:diamond_chest", default.chest.get_chest_formspec(pos))
@@ -404,7 +408,7 @@ core.register_node("ffa_loot:diamond_chest_open", {
 
 core.register_craftitem("ffa_loot:diamond_key", {
     description = core.colorize("#12e8ec", "Diamond Key"),
-    inventory_image = "ffa_loot_key.png",
+    inventory_image = "ffa_loot_diamond_key.png",
     stack_max = 1
 })
 

@@ -1,4 +1,5 @@
-if not ffa.map.pos1 and not ffa.map.pos2 then
+if not ffa.module_loaded() then
+    core.log("warning", "[FFA] Unable to load server cleanup")
     return
 end
 
@@ -6,9 +7,10 @@ local pos1 = ffa.map.pos1
 local pos2 = ffa.map.pos2
 local nodes = ffa.nodes
 
-local INTERVAL = 1800
+local timer = 0
+local INTERVAL = 1800 -- 30m
 local WARN = 30
-local STEP = 16
+local STEP = core.MAP_BLOCKSIZE or 16
 
 local function sort_pos(a, b)
     return {
@@ -58,33 +60,46 @@ local function clean_area()
 end
 
 local function notify_players(message)
-    for _, name in ipairs(ffa.get_players()) do
+    for _, name in ipairs(ffa.get_names()) do
         local player = core.get_player_by_name(name)
-        hud_api.show_front(player, message, "0xFF0000")
-        core.after(2, hud_api.remove, player, "front")
+        hud_api.show_actionbar(player, message, "0xFF0000")
+        core.after(1, hud_api.remove, player, "actionbar")
     end
 end
 
-local timer = 0
-local function update()
+core.register_chatcommand("ffa_cleanup", {
+    privs = {ffa_manager=true},
+    func = function(name)
+        for _, pn in ipairs(ffa.get_names()) do
+            ffa.to_random_spawn(core.get_player_by_name(pn))
+        end
+
+        notify_players("Cleaning the area ...")
+        clean_area()
+
+        timer = 0
+    end
+})
+
+local function update_cleaning()
     timer = timer + 1
 
-    if (INTERVAL - timer) == WARN then
-        notify_players(("Cleaning the area in %ds"):format(WARN))
+    local time_left = (INTERVAL - timer)
+    if time_left <= WARN then
+        notify_players(("Cleaning in %ds"):format(time_left))
     end
 
     if timer >= INTERVAL then
         timer = 0
-        for _, name in ipairs(ffa.get_players()) do
-            local player = core.get_player_by_name(name)
-            ffa.to_random_spawn(player)
+        for _, name in ipairs(ffa.get_names()) do
+            ffa.to_random_spawn(core.get_player_by_name(name))
         end
 
-        notify_players("Cleanup ...")
+        notify_players("Cleaning the area ...")
         clean_area()
     end
 
-    core.after(1, update)
+    core.after(1, update_cleaning)
 end
 
-core.after(1, update)
+core.after(5, update_cleaning)

@@ -1,5 +1,11 @@
 local modstorage = core.get_mod_storage()
 
+core.register_privilege("ffa_manager", {
+    description = "Allows the player to manage FFA",
+    give_to_singleplayer = false,
+    give_to_admin = false,
+})
+
 local function get_spawns()
     return ffa.map.spawns
 end
@@ -21,91 +27,57 @@ local function remove_spawn(id)
     end
 end
 
-core.register_chatcommand("ffa_spawn", {
-    params = "add | remove <id>",
-    privs = {server=true},
+core.register_chatcommand("ffa_map", {
+    params = "spawn add | spawn remove <id> | spawn list | pos1 | pos2 | toggle <enable|disable|1|0> | save | print",
+    privs = {ffa_manager=true},
     func = function(name, param)
         local player = core.get_player_by_name(name)
+        if not player then
+            return false, "You must be online to use this command."
+        end
+
+        local safe_pos = vector.round(player:get_pos())
         local params = param:split(" ")
 
-        if not ffa.map.spawns then
-            ffa.map.spawns = {}
-        end
-
-        if params[1] == "add" then
-            local pos =  vector.round(player:get_pos())
-            table.insert(ffa.map.spawns, pos)
-            return true, "Spawn added ! " .. core.pos_to_string(pos)
-        elseif params[1] == "remove" then
-            local id = tonumber(params[2])
-            if id ~= nil then
-                remove_spawn(id)
-                return true, "Spawn n°" .. id .. " removed!"
+        if params[1] == "spawn" then
+            if params[2] == "add" then
+                table.insert(ffa.map.spawns, safe_pos)
+                return true, "Spawn added at " .. core.pos_to_string(safe_pos)
+            elseif params[2] == "remove" then
+                local id = tonumber(params[3])
+                if id then
+                    remove_spawn(id)
+                    return true, "Spawn n°" .. id .. " removed!"
+                end
+            elseif params[2] == "list" then
+                return true, list_spawns()
             end
+
+        elseif params[1] == "pos1" then
+            ffa.map.pos1 = safe_pos
+            return true, "Position (1) set at " .. core.pos_to_string(safe_pos)
+
+        elseif params[1] == "pos2" then
+            ffa.map.pos2 = safe_pos
+            return true, "Position (2) set at " .. core.pos_to_string(safe_pos)
+
+        elseif params[1] == "toggle" then
+            if params[2] == "disable" or params[2] == "0" then
+                ffa.map.disabled = true
+                return true, "Map disabled."
+            elseif params[2] == "enable" or params[2] == "1" then
+                ffa.map.disabled = false
+                return true, "Map enabled."
+            end
+
+        elseif params[1] == "save" then
+            modstorage:set_string("ffa:map", core.serialize(ffa.map))
+            return true, "Map saved."
+
+        elseif params[1] == "print" then
+            return true, dump(ffa.map)
         end
 
-        return true, list_spawns()
+        return false, "Invalid parameters : " .. param
     end
 })
-
-core.register_chatcommand("ffa_pos1", {
-    params = "set",
-    privs = {server=true},
-    func = function(name, param)
-        if param == "set" then
-            local player = core.get_player_by_name(name)
-            local pos =  vector.round(player:get_pos())
-            ffa.map.pos1 = pos
-            return true, "Position set ! " .. core.pos_to_string(pos)
-        end
-
-        return true, "Current pos1 " .. core.pos_to_string(ffa.map.pos1)
-    end
-})
-
-core.register_chatcommand("ffa_pos2", {
-    params = "set",
-    privs = {server=true},
-    func = function(name, param)
-        if param == "set" then
-            local player = core.get_player_by_name(name)
-            local pos =  vector.round(player:get_pos())
-            ffa.map.pos2 = pos
-            return true, "Position set ! " .. core.pos_to_string(pos)
-        end
-
-        return true, "Current pos2 " .. core.pos_to_string(ffa.map.pos2)
-    end
-})
-
-core.register_chatcommand("ffa_save", {
-    privs = {server=true},
-    func = function(name, param)
-        modstorage:set_string("ffa:map", core.serialize(ffa.map))
-        ffa.map = core.deserialize(modstorage:get_string("ffa:map"))
-        return true, "Map saved!"
-    end
-})
-
-core.register_chatcommand("ffa_data", {
-    privs = {server=true},
-    func = function(name, param)
-        return true, dump(ffa.map)
-    end
-})
-
-core.register_chatcommand("ffa_toggle", {
-    params = "enable | disable",
-    privs = {server=true},
-    func = function(name, param)
-        if param == "disable" then
-            ffa.disabled = true
-            return true, "Map disabled until next restart..."
-        end
-
-        ffa.disabled = false
-        return true, "Map enabled..."
-    end
-})
-
-ffa.map = core.deserialize(modstorage:get_string("ffa:map")) or {}
