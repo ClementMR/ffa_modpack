@@ -3,7 +3,7 @@ unused_args = false
 globals = {
     "ffa", "ffa_loot",
     "default", "minigame",
-    "skylith"
+    "skylith", "armor", "hud_api"
 }
 
 read_globals = {
