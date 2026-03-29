@@ -53,7 +53,7 @@ core.register_on_placenode(function(pos, newnode, placer, oldnode, itemstack, po
         return
     end
     for _, node in ipairs(ffa.nodes) do
-        if newnode.name == node and not is_liquid_node(oldnode.name) and not oldnode.name == "fire:permanent_flame" then
+        if newnode.name == node and not is_liquid_node(oldnode.name) and oldnode.name ~= "fire:permanent_flame" then
             return false
         end
     end
