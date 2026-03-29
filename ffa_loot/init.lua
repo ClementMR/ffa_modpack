@@ -41,6 +41,7 @@ local mese_loot = {
     {name = "enderpearl:ender_pearl", chance = 0.2, max = 3},
     {name = "ctf_ranged:shotgun_loaded", chance = 0.1, max = 1},
     {name = "ctf_ranged:ammo", chance = 0.4, max = 5},
+    {name = "default:mese_crystal", chance = 0.2, max = 2},
 }
 
 local diamond_loot = {
