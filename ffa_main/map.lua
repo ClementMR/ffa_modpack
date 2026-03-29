@@ -1,7 +1,3 @@
---local worldpath = core.get_worldpath()
---local file_name = core.settings:get("ffa_filename") or "ffa.json"
---local path = worldpath .. "/" .. file_name
-
 local modstorage = core.get_mod_storage()
 
 local function get_spawns()
@@ -112,33 +108,4 @@ core.register_chatcommand("ffa_toggle", {
     end
 })
 
-core.after(0, function()
-    ffa.map = core.deserialize(modstorage:get_string("ffa:map")) or {}
-end)
-
---[[
-local function write_file(data)
-    local file = io.open(path, "w")
-    if file then
-        file:write(core.write_json(data, true))
-        file:close()
-    end
-end
-
-local function read_file()
-    local file = io.open(path, "r")
-    if file then
-        local content = file:read("*all")
-        file:close()
-
-        local data = core.parse_json(content)
-        if data and type(data) == "table" then
-            table.insert(ffa.map, data)
-        end
-    else
-        core.log("action", string.format("Creating file %s at %s", file_name, path))
-        write_file({})
-    end
-end
-core.after(0, read_file)
-]]
+ffa.map = core.deserialize(modstorage:get_string("ffa:map")) or {}

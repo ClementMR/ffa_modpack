@@ -5,6 +5,7 @@ ffa = {
         pos2 = {}
     },
     disabled = false,
+    nodes = {}
 }
 
 local files = {
