@@ -34,8 +34,7 @@ end)
 
 core.register_on_respawnplayer(function(player)
     if ffa.get_player_in_list(player) then
-        ffa.remove_player(player)
-        skylith.try_tp_to_spawn(player)
+        ffa.to_random_spawn(player)
     end
 end)
 
