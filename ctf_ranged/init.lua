@@ -294,7 +294,7 @@ ctf_ranged.simple_register_gun("ctf_ranged:shotgun", {
 	},
 	rounds = 10,
 	range = 24,
-	damage = 2,
+	damage = 3,
 	fire_interval = 2,
 })
 
