@@ -1,18 +1,18 @@
 local regular_loot = {
     {name = "wool:red", chance = 0.9, max = 16},
     {name = "wool:blue", chance = 0.9, max = 16},
-    {name = "default:apple", chance = 0.5, max = 6},
+    {name = "default:apple", chance = 0.3, max = 6},
+    {name = "xdecor:cobweb", chance = 0.4, max = 8},
     {name = "ms_items:snowball", chance = 0.5, max = 3},
+    {name = "xdecor:baricade", chance = 0.2, max = 3},
 
     {name = "default:sword_steel", chance = 0.3, max = 1},
+    {name = "default:sword_bronze", chance = 0.2, max = 1},
     {name = "3d_armor:helmet_steel", chance = 0.2, max = 1},
     {name = "3d_armor:chestplate_steel", chance = 0.1, max = 1},
     {name = "3d_armor:leggings_steel", chance = 0.1, max = 1},
     {name = "3d_armor:boots_steel", chance = 0.2, max = 1},
     {name = "shields:shield_steel", chance = 0.2, max = 1},
-
-    {name = "xdecor:cobweb", chance = 0.2, max = 8},
-    {name = "enderpearl:ender_pearl", chance = 0.1, max = 3},
 }
 
 for _, node in ipairs(regular_loot) do
@@ -23,25 +23,24 @@ for _, node in ipairs(regular_loot) do
 end
 
 local mese_loot = {
-    {name = "wool:red", chance = 0.9, max = 16},
-    {name = "wool:blue", chance = 0.9, max = 16},
+    {name = "wool:blue", chance = 0.7, max = 16},
     {name = "default:apple", chance = 0.5, max = 8},
-	{name = "default:blueberries", chance = 0.4, max = 8},
-    {name = "ms_items:snowball", chance = 0.5, max = 3},
+    {name = "ms_items:snowball", chance = 0.25, max = 3},
+    {name = "xdecor:cobweb", chance = 0.4, max = 8},
+    {name = "ctf_ranged:ammo", chance = 0.4, max = 5},
 
-    {name = "default:sword_mese", chance = 0.3, max = 1},
-	{name = "3d_armor:helmet_gold", chance = 0.2, max = 1},
+    {name = "default:sword_mese", chance = 0.2, max = 1},
+	{name = "3d_armor:helmet_gold", chance = 0.15, max = 1},
 	{name = "3d_armor:chestplate_gold", chance = 0.1, max = 1},
 	{name = "3d_armor:leggings_gold", chance = 0.1, max = 1},
-	{name = "3d_armor:boots_gold", chance = 0.2, max = 1},
-	{name = "shields:shield_gold", chance = 0.2, max = 1},
+	{name = "3d_armor:boots_gold", chance = 0.15, max = 1},
+	{name = "shields:shield_gold", chance = 0.15, max = 1},
 
-    {name = "ffa_loot:diamond_key", chance = 0.15, max = 1},
-    {name = "xdecor:cobweb", chance = 0.4, max = 8},
-    {name = "enderpearl:ender_pearl", chance = 0.2, max = 3},
-    {name = "ctf_ranged:shotgun_loaded", chance = 0.1, max = 1},
-    {name = "ctf_ranged:ammo", chance = 0.4, max = 5},
+    -- Rare items
     {name = "default:mese_crystal", chance = 0.2, max = 2},
+    {name = "enderpearl:ender_pearl", chance = 0.1, max = 3},
+    {name = "ctf_ranged:shotgun_loaded", chance = 0.08, max = 1},
+    {name = "ffa_loot:diamond_key", chance = 0.05, max = 1},
 }
 
 local diamond_loot = {
@@ -58,7 +57,6 @@ local diamond_loot = {
 	{name = "3d_armor:boots_diamond", chance = 0.2, max = 1},
 	{name = "shields:shield_diamond", chance = 0.2, max = 1},
 
-    {name = "ms_items:sword_shadow", chance = 0.1, max = 1},
 	{name = "3d_armor:helmet_mithril", chance = 0.05, max = 1},
 	{name = "3d_armor:chestplate_mithril", chance = 0.02, max = 1},
 	{name = "3d_armor:leggings_mithril", chance = 0.02, max = 1},
@@ -66,9 +64,11 @@ local diamond_loot = {
 	{name = "shields:shield_mithril", chance = 0.05, max = 1},
 
     {name = "enderpearl:ender_pearl", chance = 0.5, max = 3},
-    {name = "xdecor:cobweb", chance = 0.5, max = 8},
-    {name = "ctf_ranged:shotgun_loaded", chance = 0.4, max = 1},
+    {name = "ctf_ranged:shotgun_loaded", chance = 0.5, max = 1},
     {name = "ctf_ranged:ammo", chance = 0.5, max = 5},
+
+    {name = "mobs:meat", chance = 0.01, max = 1}, -- Easter egg
+    {name = "ms_items:sword_shadow", chance = 0.02, max = 1},
 }
 
 local REGULAR_CHEST = 30
