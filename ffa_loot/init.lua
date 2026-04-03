@@ -1,7 +1,7 @@
 local regular_loot = {
-    {name = "wool:red", chance = 0.9, max = 16},
-    {name = "wool:blue", chance = 0.9, max = 16},
-    {name = "default:apple", chance = 0.3, max = 6},
+    {name = "wool:red", chance = 0.7, max = 16},
+    {name = "wool:blue", chance = 0.001, max = 16},
+    {name = "default:apple", chance = 0.25, max = 6},
     {name = "xdecor:cobweb", chance = 0.4, max = 8},
     {name = "ms_items:snowball", chance = 0.5, max = 3},
     {name = "xdecor:baricade", chance = 0.2, max = 3},
@@ -23,11 +23,12 @@ for _, node in ipairs(regular_loot) do
 end
 
 local mese_loot = {
-    {name = "wool:blue", chance = 0.7, max = 16},
+    {name = "wool:red", chance = 0.5, max = 16},
     {name = "default:apple", chance = 0.5, max = 8},
     {name = "ms_items:snowball", chance = 0.25, max = 3},
     {name = "xdecor:cobweb", chance = 0.4, max = 8},
     {name = "ctf_ranged:ammo", chance = 0.4, max = 5},
+    {name = "ctf_ranged:rifle_loaded", chance = 0.1, max = 1},
 
     {name = "default:sword_mese", chance = 0.2, max = 1},
 	{name = "3d_armor:helmet_gold", chance = 0.15, max = 1},
@@ -38,14 +39,13 @@ local mese_loot = {
 
     -- Rare items
     {name = "default:mese_crystal", chance = 0.2, max = 2},
-    {name = "enderpearl:ender_pearl", chance = 0.1, max = 3},
-    {name = "ctf_ranged:shotgun_loaded", chance = 0.08, max = 1},
-    {name = "ffa_loot:diamond_key", chance = 0.05, max = 1},
+    {name = "enderpearl:ender_pearl", chance = 0.05, max = 3},
+    {name = "ctf_ranged:shotgun_loaded", chance = 0.001, max = 1},
+    {name = "ffa_loot:diamond_key", chance = 0.07, max = 1},
 }
 
 local diamond_loot = {
-    {name = "wool:red", chance = 0.9, max = 16},
-    {name = "wool:blue", chance = 0.9, max = 16},
+    {name = "wool:red", chance = 0.5, max = 16},
     {name = "default:apple", chance = 0.5, max = 8},
     {name = "farming:bread", chance = 0.5, max = 8},
     {name = "ms_items:snowball", chance = 0.5, max = 3},
@@ -63,8 +63,8 @@ local diamond_loot = {
 	{name = "3d_armor:boots_mithril", chance = 0.05, max = 1},
 	{name = "shields:shield_mithril", chance = 0.05, max = 1},
 
-    {name = "enderpearl:ender_pearl", chance = 0.5, max = 3},
-    {name = "ctf_ranged:shotgun_loaded", chance = 0.5, max = 1},
+    {name = "enderpearl:ender_pearl", chance = 0.3, max = 3},
+    {name = "ctf_ranged:shotgun_loaded", chance = 0.25, max = 1},
     {name = "ctf_ranged:ammo", chance = 0.5, max = 5},
 
     {name = "mobs:meat", chance = 0.01, max = 1}, -- Easter egg
