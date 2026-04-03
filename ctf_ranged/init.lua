@@ -92,27 +92,24 @@ local function process_ray(ray, user, look_dir, def)
 			end
 		elseif hitpoint.type == "object" then
 			local player_armor = hitpoint.ref:get_armor_groups().fleshy or 100
-			local armor_buff = 0
+			local final_damage
 
 			if type(def.bullet) == "table" then
-				if player_armor <= 90 and player_armor > 50 then armor_buff = 1.0
-				elseif player_armor <= 50 and player_armor > 40 then armor_buff = 1.5
-				elseif player_armor <= 40 and player_armor > 30 then armor_buff = 2.0
-				elseif player_armor <= 30 and player_armor > 20 then armor_buff = 3.0
-				elseif player_armor <= 20 then armor_buff = 4.5 end
+				local armor_multiplier = math.min(math.sqrt(100 / player_armor), 1.8)
+				final_damage = math.floor(def.damage * armor_multiplier)
+			else
+				local armor_multiplier = math.min(100 / player_armor, 2.5)
+				final_damage = math.floor(def.damage * armor_multiplier)
 			end
 
 			hitpoint.ref:punch(user, def.fire_interval or 0.1, {
 				full_punch_interval = def.fire_interval or 0.1,
-				damage_groups = {ranged = 1, [def.type] = 1, fleshy = (def.damage + armor_buff) * 1.2}
+				damage_groups = {
+					ranged = 1,
+					[def.type] = 1,
+					fleshy = final_damage
+				}
 			}, look_dir)
-
-			--[[
-			hitpoint.ref:punch(user, def.fire_interval or 0.1, {
-				full_punch_interval = def.fire_interval or 0.1,
-				damage_groups = {ranged = 1, [def.type] = 1, fleshy = def.damage}
-			}, look_dir)
-			]]
 		end
 	end
 end
@@ -289,7 +286,7 @@ ctf_ranged.simple_register_gun("ctf_ranged:shotgun", {
 	texture = "ctf_ranged_shotgun.png",
 	fire_sound = "ctf_ranged_shotgun",
 	bullet = {
-		amount = 8,
+		amount = 12,
 		spread = 4,
 	},
 	rounds = 10,
