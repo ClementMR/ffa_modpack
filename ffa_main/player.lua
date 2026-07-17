@@ -193,6 +193,6 @@ function ffa.on_leave(player)
     ffa.remove_player(player)
     send_system_message("*** " .. player:get_player_name() .. " left FFA.")
 
-    skylith.try_tp_to_spawn(player)
-    skylith.reset_inventories(player)
+    ms_main.try_tp_to_spawn(player)
+    ms_main.reset_inventories(player)
 end
